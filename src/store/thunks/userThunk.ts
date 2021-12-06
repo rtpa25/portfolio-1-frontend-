@@ -1,6 +1,5 @@
 /** @format */
 
-import { NavigateFunction } from 'react-router-dom';
 import {
   getSelfHelper,
   loginFailure,
