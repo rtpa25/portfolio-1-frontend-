@@ -110,15 +110,18 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState('');
   const [size, setSize] = useState('');
+  const [isLoading, setIsLoading] = useState<boolean>();
   const dispatch = useAppDispatch();
   useEffect(() => {
     const getProduct = async () => {
+      setIsLoading(true);
       try {
         const res = await axiosInstance.get(`/getSingleProduct/${id}`);
         setProduct(res.data.product);
       } catch (error) {
         console.log(error);
       }
+      setIsLoading(false);
     };
     getProduct();
   }, [id]);
@@ -153,50 +156,54 @@ const Product = () => {
     <div>
       <Navbar />
       <Announcement />
-      <Wrapper className='flex p-12'>
-        <ImgContainer className='flex-1'>
-          <Image src={`${product.img.secure_url}`} />
-        </ImgContainer>
-        <InfoContainer className='flex-1 px-12 py-0'>
-          <Title className='text-4xl text-gray-700 font-extralight'>
-            {product.name}
-          </Title>
-          <Desc className='mx-0 text-gray-700 my-7'>{product.desc}</Desc>
-          <Price className='text-4xl font-thin text-gray-500'>
-            $ {product.price}
-          </Price>
-          <FilterContainer className='flex justify-between w-6/12 mx-0 my-7'>
-            <Filter>
-              <FilterTitle>Color</FilterTitle>
-              {product.color?.map((c: string) => (
-                <FilterColor color={c} key={c} onClick={() => setColor(c)} />
-              ))}
-            </Filter>
-            <Filter>
-              <FilterTitle>Size</FilterTitle>
-              <FilterSize onChange={(e) => setSize(e.target.value)}>
-                {product.size.map((s: string) => (
-                  <FilterSizeOption key={s}>{s}</FilterSizeOption>
+      {isLoading ? (
+        <span>Loading...</span>
+      ) : (
+        <Wrapper className='flex p-12'>
+          <ImgContainer className='flex-1'>
+            <Image src={`${product.img.secure_url}`} />
+          </ImgContainer>
+          <InfoContainer className='flex-1 px-12 py-0'>
+            <Title className='text-4xl text-gray-700 font-extralight'>
+              {product.name}
+            </Title>
+            <Desc className='mx-0 text-gray-700 my-7'>{product.desc}</Desc>
+            <Price className='text-4xl font-thin text-gray-500'>
+              $ {product.price}
+            </Price>
+            <FilterContainer className='flex justify-between w-6/12 mx-0 my-7'>
+              <Filter>
+                <FilterTitle>Color</FilterTitle>
+                {product.color?.map((c: string) => (
+                  <FilterColor color={c} key={c} onClick={() => setColor(c)} />
                 ))}
-              </FilterSize>
-            </Filter>
-          </FilterContainer>
-          <AddContainer className='flex items-center justify-between w-6/12'>
-            <AmountContainer className='flex items-center text-semibold'>
-              <Remove onClick={() => handleQuantity('dec')} />
-              <Amount className='flex items-center justify-center mx-2 my-0 border border-green-600 border-solid rounded-lg w-7 h-7'>
-                {quantity}
-              </Amount>
-              <Add onClick={() => handleQuantity('inc')} />
-            </AmountContainer>
-            <Button
-              className='p-3.5 border border-green-600 border-solid font-medium'
-              onClick={handleClick}>
-              ADD TO CART
-            </Button>
-          </AddContainer>
-        </InfoContainer>
-      </Wrapper>
+              </Filter>
+              <Filter>
+                <FilterTitle>Size</FilterTitle>
+                <FilterSize onChange={(e) => setSize(e.target.value)}>
+                  {product.size.map((s: string) => (
+                    <FilterSizeOption key={s}>{s}</FilterSizeOption>
+                  ))}
+                </FilterSize>
+              </Filter>
+            </FilterContainer>
+            <AddContainer className='flex items-center justify-between w-6/12'>
+              <AmountContainer className='flex items-center text-semibold'>
+                <Remove onClick={() => handleQuantity('dec')} />
+                <Amount className='flex items-center justify-center mx-2 my-0 border border-green-600 border-solid rounded-lg w-7 h-7'>
+                  {quantity}
+                </Amount>
+                <Add onClick={() => handleQuantity('inc')} />
+              </AmountContainer>
+              <Button
+                className='p-3.5 border border-green-600 border-solid font-medium'
+                onClick={handleClick}>
+                ADD TO CART
+              </Button>
+            </AddContainer>
+          </InfoContainer>
+        </Wrapper>
+      )}
       <Newsletter />
       <Footer />
     </div>

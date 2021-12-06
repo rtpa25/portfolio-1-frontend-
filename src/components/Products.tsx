@@ -30,11 +30,13 @@ export interface ProductDocument {
 }
 
 const Products: React.FC<ProductsProps> = ({ category, filters, sort }) => {
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [products, setProducts] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState<boolean>();
+  const [filteredProducts, setFilteredProducts] = useState<any>([]);
 
   useEffect(() => {
     const getProducts = async () => {
+      setIsLoading(true);
       try {
         const res = await axiosInstance.get(
           category ? `/getAllProducts?category=${category}` : `/getAllProducts`
@@ -44,6 +46,7 @@ const Products: React.FC<ProductsProps> = ({ category, filters, sort }) => {
       } catch (error) {
         console.log(error);
       }
+      setIsLoading(false);
     };
     getProducts();
   }, [category]);
@@ -61,15 +64,15 @@ const Products: React.FC<ProductsProps> = ({ category, filters, sort }) => {
 
   useEffect(() => {
     if (sort === 'newest') {
-      setFilteredProducts((prev) =>
+      setFilteredProducts((prev: any) =>
         [...prev].sort((a: any, b: any) => a.createdAt - b.createdAt)
       );
     } else if (sort === 'asc') {
-      setFilteredProducts((prev) =>
+      setFilteredProducts((prev: any) =>
         [...prev].sort((a: any, b: any) => a.price - b.price)
       );
     } else {
-      setFilteredProducts((prev) =>
+      setFilteredProducts((prev: any) =>
         [...prev].sort((a: any, b: any) => b.price - a.price)
       );
     }
@@ -77,25 +80,29 @@ const Products: React.FC<ProductsProps> = ({ category, filters, sort }) => {
 
   return (
     <Container className=' p-7'>
-      {category
-        ? filteredProducts.map((product: ProductDocument) => {
-            return (
-              <Product
-                img={product.img.secure_url}
-                id={product._id}
-                key={product._id}
-              />
-            );
-          })
-        : products.slice(0, 8).map((product: ProductDocument) => {
-            return (
-              <Product
-                img={product.img.secure_url}
-                id={product._id}
-                key={product._id}
-              />
-            );
-          })}
+      {isLoading ? (
+        <span>Loading...</span>
+      ) : category ? (
+        filteredProducts.map((product: ProductDocument) => {
+          return (
+            <Product
+              img={product.img.secure_url}
+              id={product._id}
+              key={product._id}
+            />
+          );
+        })
+      ) : (
+        products.slice(0, 8).map((product: ProductDocument) => {
+          return (
+            <Product
+              img={product.img.secure_url}
+              id={product._id}
+              key={product._id}
+            />
+          );
+        })
+      )}
     </Container>
   );
 };
