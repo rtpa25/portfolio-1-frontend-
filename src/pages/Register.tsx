@@ -79,6 +79,7 @@ const Register = () => {
     if (error === false && isFetching === false) {
       Cookies.remove('token');
       Cookies.set('token', res?.data.token);
+      window.location.reload();
       navigate('/products');
     }
   };

@@ -13,8 +13,7 @@ import { axiosInstance, axiosAuthInstance } from '../../config';
 
 export const login = async (
   dispatch: AppDispatch,
-  user: { email: string; password: string },
-  navigate: NavigateFunction
+  user: { email: string; password: string }
 ) => {
   dispatch(loginStart());
   try {
@@ -23,7 +22,7 @@ export const login = async (
       password: user.password,
     });
     dispatch(loginSucess({ user: res.data.user, token: res.data.token }));
-    navigate('/products');
+
     return res;
   } catch (error) {
     dispatch(loginFailure());

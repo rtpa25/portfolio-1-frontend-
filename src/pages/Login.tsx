@@ -79,14 +79,12 @@ const Login = () => {
   const loginCkickHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
-      let res = await login(
-        dispatch,
-        { email: email, password: password },
-        navigate
-      );
+      let res = await login(dispatch, { email: email, password: password });
       if (error === false && isFetching === false) {
         Cookies.remove('token');
         Cookies.set('token', res?.data.token);
+        window.location.reload();
+        navigate('/products');
         await fetchCart(dispatch);
       }
     } catch (error) {
