@@ -49,6 +49,8 @@ const ProductList = () => {
   const category = location.pathname.split('/')[2];
   const [filters, setFilter] = useState({});
   const [sort, setSort] = useState('newest');
+
+  //TODO: CHECK IF IT WORKS
   const handleFilters = (
     e: React.ChangeEvent<HTMLSelectElement> | undefined
   ) => {

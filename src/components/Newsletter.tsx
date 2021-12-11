@@ -1,6 +1,7 @@
 /** @format */
 
 import { Send } from '@material-ui/icons';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -49,6 +50,13 @@ const Info = styled.div`
 `;
 
 const Newsletter = () => {
+  const [formInput, setFormInput] = useState<string>('');
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const formSubmitHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+    setFormInput('');
+  };
   return (
     <Container className='flex flex-col items-center justify-center'>
       <Title className='mb-10 font-semibold text-7xl'>Newsletter</Title>
@@ -56,11 +64,19 @@ const Newsletter = () => {
         Get timely updates from your favorite products.
       </Info>
       <Form className='flex items-center justify-between w-5/12 h-12 bg-white border border-gray-100 border-solid'>
-        <Input placeholder='Your email' className='h-12' />
-        <Button className='h-12'>
+        <Input
+          placeholder='Your email'
+          className='h-12'
+          value={formInput}
+          onChange={(e) => {
+            setFormInput(e.target.value);
+          }}
+        />
+        <Button className='h-12' onClick={formSubmitHandler}>
           <Send />
         </Button>
       </Form>
+      {isSubmitted && <p className='text-green-700'>Thanks for sharing</p>}
     </Container>
   );
 };

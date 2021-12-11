@@ -113,10 +113,10 @@ const Footer = () => {
             <Link to={'/cart'}>Cart </Link>
           </ListItem>
           <ListItem>
-            <Link to={'/products/jackets'}>Jackets </Link>
+            <Link to={'/products/jacket'}>Jackets </Link>
           </ListItem>
           <ListItem>
-            <Link to={'/products/shirts'}>Shirts </Link>
+            <Link to={'/products/shirt'}>Shirts </Link>
           </ListItem>
           <ListItem>
             <Link to={'/products/loungewear'}>loungewear </Link>

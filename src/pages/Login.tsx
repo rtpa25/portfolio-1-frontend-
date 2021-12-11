@@ -2,6 +2,7 @@
 
 import Cookies from 'js-cookie';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../hooks';
@@ -36,7 +37,7 @@ const Button = styled.button`
   }
 `;
 
-const Link = styled.a`
+const Linkstyled = styled(Link)`
   margin-top: 0.725rem;
   font-size: 0.75rem;
   text-decoration: underline;
@@ -83,9 +84,9 @@ const Login = () => {
       if (error === false && isFetching === false) {
         Cookies.remove('token');
         Cookies.set('token', res?.data.token);
-        window.location.reload();
-        navigate('/products');
         await fetchCart(dispatch);
+        navigate('/products');
+        window.location.reload();
       }
     } catch (error) {
       console.log(error);
@@ -93,10 +94,17 @@ const Login = () => {
     }
   };
 
+  //TODO: RENDER THE DEMO ACCOUNT DETAILS ON TOP OF THE PAGE
+  //TODO: IMPROVE THE NAVIGATION
   return (
     <Container className='flex items-center justify-center w-screen h-screen'>
       <Wrapper className='w-4/12 bg-white p-7'>
         <h1 className='text-4xl font-light text-gray-700'>LOGIN TO ACCOUNT</h1>
+        <div className='my-5 text-gray-500'>
+          <p>Demo: 'test0@email.com'</p>
+          <p>password: 'test0123'</p>
+        </div>
+
         <Form className='flex flex-col'>
           <Input
             placeholder='email'
@@ -115,9 +123,9 @@ const Login = () => {
             onClick={loginCkickHandler}>
             LOGIN
           </Button>
-          {error && <Error>Something went wrong...</Error>}
-          <Link>DO NOT REMEMBER THE PASSWORD ?</Link>
-          <Link>CREATE A NEW ACCOUNT</Link>
+          {error && <Error to={'/'}>Something went wrong...</Error>}
+          <Linkstyled to={'/'}>DO NOT REMEMBER THE PASSWORD ?</Linkstyled>
+          <Linkstyled to={'/register'}>CREATE A NEW ACCOUNT</Linkstyled>
         </Form>
       </Wrapper>
     </Container>

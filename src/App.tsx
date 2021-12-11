@@ -41,14 +41,23 @@ const App = () => {
           path='/'
           element={token ? <Navigate to='/products' /> : <Home />}
         />
-        <Route path='/products/*' element={<ProductList />} />
-        <Route path='/product/:productId' element={<Product />} />
-        <Route path='/cart' element={<Cart />} />
+        <Route
+          path='/products/*'
+          element={token ? <ProductList /> : <Home />}
+        />
+        <Route
+          path='/product/:productId'
+          element={token ? <Product /> : <Home />}
+        />
+        <Route path='/cart' element={token ? <Cart /> : <Home />} />
         <Route
           path='/sucess'
           element={token ? <Sucess /> : <Navigate to='/register' />}
         />
-        <Route path='/userProfile' element={<UserProfile />} />
+        <Route
+          path='/userProfile'
+          element={token ? <UserProfile /> : <Home />}
+        />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/*' element={<Page404 />} />

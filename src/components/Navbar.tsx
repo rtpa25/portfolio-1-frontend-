@@ -39,8 +39,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const signOutHandler = () => {
     Cookies.remove('token');
-    window.location.reload();
     navigate('/');
+    window.location.reload();
   };
   return (
     <Container className='h-24'>

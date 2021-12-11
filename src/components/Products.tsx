@@ -30,9 +30,8 @@ export interface ProductDocument {
 }
 
 const Products: React.FC<ProductsProps> = ({ category, filters, sort }) => {
-  const [products, setProducts] = useState<any>([]);
+  const [products, setProducts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>();
-  const [filteredProducts, setFilteredProducts] = useState<any>([]);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -42,7 +41,6 @@ const Products: React.FC<ProductsProps> = ({ category, filters, sort }) => {
           category ? `/getAllProducts?category=${category}` : `/getAllProducts`
         );
         setProducts(res.data.products);
-        console.log(res);
       } catch (error) {
         console.log(error);
       }
@@ -52,28 +50,18 @@ const Products: React.FC<ProductsProps> = ({ category, filters, sort }) => {
   }, [category]);
 
   useEffect(() => {
-    category &&
-      setFilteredProducts(
-        products.filter((item: any) =>
-          Object.entries(filters).every(([key, value]) =>
-            item[key].includes(value)
-          )
-        )
-      );
-  }, [products, filters, category]);
-
-  useEffect(() => {
+    //TODO: DEBUG!!!
     if (sort === 'newest') {
-      setFilteredProducts((prev: any) =>
-        [...prev].sort((a: any, b: any) => a.createdAt - b.createdAt)
+      setProducts((prevState: any) =>
+        [...prevState].sort((a: any, b: any) => a.createdAt - b.createdAt)
       );
     } else if (sort === 'asc') {
-      setFilteredProducts((prev: any) =>
-        [...prev].sort((a: any, b: any) => a.price - b.price)
+      setProducts((prevState: any) =>
+        [...prevState].sort((a: any, b: any) => b.price - a.price)
       );
     } else {
-      setFilteredProducts((prev: any) =>
-        [...prev].sort((a: any, b: any) => b.price - a.price)
+      setProducts((prevState: any) =>
+        [...prevState].sort((a: any, b: any) => a.price - b.price)
       );
     }
   }, [sort]);
@@ -82,18 +70,8 @@ const Products: React.FC<ProductsProps> = ({ category, filters, sort }) => {
     <Container className=' p-7'>
       {isLoading ? (
         <span>Loading...</span>
-      ) : category ? (
-        filteredProducts.map((product: ProductDocument) => {
-          return (
-            <Product
-              img={product.img.secure_url}
-              id={product._id}
-              key={product._id}
-            />
-          );
-        })
       ) : (
-        products.slice(0, 8).map((product: ProductDocument) => {
+        products.map((product: ProductDocument) => {
           return (
             <Product
               img={product.img.secure_url}
