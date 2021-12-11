@@ -125,7 +125,10 @@ const Footer = () => {
             <Link to={'/userProfile'}>Account Details</Link>
           </ListItem>
           <ListItem>
-            <a target='_blank' href='https://google.com/' rel='noreferrer'>
+            <a
+              target='_blank'
+              href='https://portfolio-1-admin-dashboard.vercel.app'
+              rel='noreferrer'>
               Admin-Panel
             </a>
           </ListItem>
